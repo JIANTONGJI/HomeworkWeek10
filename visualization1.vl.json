@@ -1,0 +1,189 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "title": "USA Crime State Distribution Graph",
+  "width": 1000,
+  "height": 450,
+  "data": {
+    "url": "https://raw.githubusercontent.com/JIANTONGJI/HomeworkWeek10/main/US_violent_crime_data.csv"
+  },
+  "params": [
+    {
+      "name": "State_selection",
+      "bind": {
+        "input": "select",
+        "options": [
+          null,
+          "Alabama",
+          "Alaska",
+          "Arizona",
+          "Arkansas",
+          "California",
+          "Colorado",
+          "Connecticut",
+          "Delaware",
+          "Florida",
+          "Georgia",
+          "Hawaii",
+          "Idaho",
+          "Illinois",
+          "Indiana",
+          "Iowa",
+          "Kansas",
+          "Kentucky",
+          "Louisiana",
+          "Maine",
+          "Maryland",
+          "Massachusetts",
+          "Michigan",
+          "Minnesota",
+          "Mississippi",
+          "Missouri",
+          "Montana",
+          "Nebraska",
+          "Nevada",
+          "New Hampshire",
+          "New Jersey",
+          "New Mexico",
+          "New York",
+          "North Carolina",
+          "North Dakota",
+          "Ohio",
+          "Oklahoma",
+          "Oregon",
+          "Pennsylvania",
+          "Rhode Island",
+          "South Carolina",
+          "South Dakota",
+          "Tennessee",
+          "Texas",
+          "Utah",
+          "Vermont",
+          "Virginia",
+          "Washington",
+          "West Virginia",
+          "Wisconsin",
+          "Wyoming"
+        ],
+        "labels": [
+          "Show All",
+          "Alabama",
+          "Alaska",
+          "Arizona",
+          "Arkansas",
+          "California",
+          "Colorado",
+          "Connecticut",
+          "Delaware",
+          "Florida",
+          "Georgia",
+          "Hawaii",
+          "Idaho",
+          "Illinois",
+          "Indiana",
+          "Iowa",
+          "Kansas",
+          "Kentucky",
+          "Louisiana",
+          "Maine",
+          "Maryland",
+          "Massachusetts",
+          "Michigan",
+          "Minnesota",
+          "Mississippi",
+          "Missouri",
+          "Montana",
+          "Nebraska",
+          "Nevada",
+          "New Hampshire",
+          "New Jersey",
+          "New Mexico",
+          "New York",
+          "North Carolina",
+          "North Dakota",
+          "Ohio",
+          "Oklahoma",
+          "Oregon",
+          "Pennsylvania",
+          "Rhode Island",
+          "South Carolina",
+          "South Dakota",
+          "Tennessee",
+          "Texas",
+          "Utah",
+          "Vermont",
+          "Virginia",
+          "Washington",
+          "West Virginia",
+          "Wisconsin",
+          "Wyoming"
+        ],
+        "name": "State Selection: "
+      }
+    }
+  ],
+  "transform": [
+    {"fold": ["Murder", "Assault", "UrbanPop", "Rape"]},
+    {"filter": "State_selection == null || State_selection == datum.State"}
+  ],
+  "encoding": {
+    "x": {"field": "State", "title": "States", "type": "nominal"},
+    "y": {"field": "Murder", "title": "Cases", "type": "quantitative"}
+  },
+  "layer": [
+    {
+      "selection": {
+        "crime_highlight": {
+          "type": "multi",
+          "fields": ["key"],
+          "bind": "legend"
+        }
+      },
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "State", "title": "States", "type": "ordinal"},
+        "y": {"field": "value", "title": "Cases", "type": "quantitative"},
+        "color": {"field": "key", "title": "Crime Type", "type": "nominal"},
+        "opacity": {
+          "condition": {"selection": "crime_highlight", "value": 1},
+          "value": 0.5
+        },
+        "tooltip": [
+          {"field": "State", "type": "nominal"},
+          {"field": "Murder", "type": "quantitative", "format": ","},
+          {"field": "Assault", "type": "quantitative", "format": ","},
+          {"field": "UrbanPop", "type": "quantitative", "format": ","},
+          {"field": "Rape", "type": "quantitative", "format": ","}
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "dx": 16,
+        "dy": -420,
+        "fontSize": 12,
+        "fontStyle": "italic"
+      },
+      "encoding": {
+        "text": {"field": "State", "type": "nominal"},
+        "color": {"value": "black"},
+        "opacity": {
+          "condition": {
+            "test": "datum['State'] == null || datum['State'] == 'Florida'"
+          },
+          "value": 0
+        },
+        "tooltip": [
+          {"field": "State", "type": "nominal"},
+          {"field": "Murder", "type": "quantitative", "format": ","},
+          {"field": "Assault", "type": "quantitative", "format": ","},
+          {"field": "UrbanPop", "type": "quantitative", "format": ","},
+          {"field": "Rape", "type": "quantitative", "format": ","}
+        ]
+      }
+    }
+  ],
+  "config": {}
+}
